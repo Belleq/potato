@@ -37,9 +37,86 @@ public class Robot extends IterativeRobot {
 
 	
 	public void autonomousInit() {
+		// go straight
+		leftMotor.set(1);
+		rightMotor.set(1);
 		
+		if (Constants.USING_ENCODER){
+			while(leftMotor.get() < 5000){
+				
+			}
+		} else {
+			long current = System.currentTimeMillis();
+			while((current + 5000) > System.currentTimeMillis()){
+				
+			}
+		}
+		
+		// turn left
+		leftMotor.set(-1);
+		rightMotor.set(1);
+		
+		if (Constants.USING_ENCODER){
+			while(leftMotor.get() < 5000){
+				
+			}
+		} else {
+			long current = System.currentTimeMillis();
+			while((current + 5000) > System.currentTimeMillis()){
+				
+			}
+		}
+		
+		// go straight
+		leftMotor.set(1);
+		rightMotor.set(1);
+		
+		if (Constants.USING_ENCODER){
+			while(leftMotor.get() < 5000){
+				
+			}
+		} else {
+			long current = System.currentTimeMillis();
+			while((current + 5000) > System.currentTimeMillis()){
+				
+			}
+		}
+		
+		// pick up left basket
+		
+		// turn around
+		leftMotor.set(-1);
+		rightMotor.set(1);
+		
+		if (Constants.USING_ENCODER){
+			while(leftMotor.get() < 5000){
+				
+			}
+		} else {
+			long current = System.currentTimeMillis();
+			while((current + 5000) > System.currentTimeMillis()){
+				
+			}
+		}
+		
+		// go straight
+		leftMotor.set(1);
+		rightMotor.set(1);
+		
+		if (Constants.USING_ENCODER){
+			while(leftMotor.get() < 5000){
+				
+			}
+		} else {
+			long current = System.currentTimeMillis();
+			while((current + 5000) > System.currentTimeMillis()){
+				
+			}
+		}
+		
+		// pick up right basket
 	}
-
+	
 	public void autonomousPeriodic() {
 		
 	}
