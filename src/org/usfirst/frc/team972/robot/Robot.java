@@ -7,13 +7,17 @@ public class Robot extends IterativeRobot {
 	CANTalon leftMotor = new CANTalon(1);
 	CANTalon rightMotor = new CANTalon(2);
 	
+	DoubleSolenoid hookPiston = new DoubleSolenoid(0,1);
+	
 	Joystick leftJoy = new Joystick(0);
 	Joystick rightJoy = new Joystick(1);
 	
 	// reverse drive + squared inputs
 	boolean reversed = false;
 	boolean squared = false;
+	boolean pistonOut = false;
 	
+	boolean lastHoo = false;
 	boolean lastSqu = false;
 	
 	double comp(double x){
@@ -42,12 +46,12 @@ public class Robot extends IterativeRobot {
 		rightMotor.set(1);
 		
 		if (Constants.USING_ENCODER){
-			while(leftMotor.get() < 5000){
+			while(isAutonomous() && isEnabled() && leftMotor.get() < 5000){
 				
 			}
 		} else {
 			long current = System.currentTimeMillis();
-			while((current + 5000) > System.currentTimeMillis()){
+			while(isAutonomous() && isEnabled() && (current + 5000) > System.currentTimeMillis()){
 				
 			}
 		}
@@ -57,12 +61,12 @@ public class Robot extends IterativeRobot {
 		rightMotor.set(1);
 		
 		if (Constants.USING_ENCODER){
-			while(leftMotor.get() < 5000){
+			while(isAutonomous() && isEnabled() && leftMotor.get() < 5000){
 				
 			}
 		} else {
 			long current = System.currentTimeMillis();
-			while((current + 5000) > System.currentTimeMillis()){
+			while(isAutonomous() && isEnabled() && (current + 5000) > System.currentTimeMillis()){
 				
 			}
 		}
@@ -72,12 +76,12 @@ public class Robot extends IterativeRobot {
 		rightMotor.set(1);
 		
 		if (Constants.USING_ENCODER){
-			while(leftMotor.get() < 5000){
+			while(isAutonomous() && isEnabled() && leftMotor.get() < 5000){
 				
 			}
 		} else {
 			long current = System.currentTimeMillis();
-			while((current + 5000) > System.currentTimeMillis()){
+			while(isAutonomous() && isEnabled() && (current + 5000) > System.currentTimeMillis()){
 				
 			}
 		}
@@ -89,12 +93,12 @@ public class Robot extends IterativeRobot {
 		rightMotor.set(1);
 		
 		if (Constants.USING_ENCODER){
-			while(leftMotor.get() < 5000){
+			while(isAutonomous() && isEnabled() && leftMotor.get() < 5000){
 				
 			}
 		} else {
 			long current = System.currentTimeMillis();
-			while((current + 5000) > System.currentTimeMillis()){
+			while(isAutonomous() && isEnabled() && (current + 5000) > System.currentTimeMillis()){
 				
 			}
 		}
@@ -104,12 +108,12 @@ public class Robot extends IterativeRobot {
 		rightMotor.set(1);
 		
 		if (Constants.USING_ENCODER){
-			while(leftMotor.get() < 5000){
+			while(isAutonomous() && isEnabled() && leftMotor.get() < 5000){
 				
 			}
 		} else {
 			long current = System.currentTimeMillis();
-			while((current + 5000) > System.currentTimeMillis()){
+			while(isAutonomous() && isEnabled() && (current + 5000) > System.currentTimeMillis()){
 				
 			}
 		}
@@ -132,6 +136,20 @@ public class Robot extends IterativeRobot {
 		
 		leftMotor.set(comp(leftJoy.getY()));
 		rightMotor.set(comp(rightJoy.getY()));
+		
+		boolean currHoo = leftJoy.getRawButton(Constants.CLAW_TOGGLE_BUTTON_LEFTJOY);
+		
+		if (currHoo && !lastHoo){
+			pistonOut = !pistonOut;
+		}
+		lastHoo = currHoo;
+		
+		if (pistonOut){
+			hookPiston.set(DoubleSolenoid.Value.kForward);
+		} else {
+			hookPiston.set(DoubleSolenoid.Value.kReverse);
+		}
+		
 	}
 
 	public void testPeriodic() {
