@@ -116,6 +116,7 @@ public class Robot extends IterativeRobot {
 			
 		}
 		hookMotor.set(0);
+		locked = true;
 		
 	}
 	
