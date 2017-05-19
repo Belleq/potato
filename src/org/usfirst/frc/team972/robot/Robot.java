@@ -4,21 +4,28 @@ import edu.wpi.first.wpilibj.*;
 import com.ctre.*;
 
 public class Robot extends IterativeRobot {
+	// drive
 	CANTalon leftMotor = new CANTalon(1);
 	CANTalon rightMotor = new CANTalon(2);
 	
-	DoubleSolenoid hookPiston = new DoubleSolenoid(0,1);
+	// hooks
+	CANTalon hookMotor = new CANTalon(3);
+
+	DigitalInput unlockLimit = new DigitalInput(0);
+	DigitalInput lockLimit = new DigitalInput(1);
 	
+	boolean locked = false;
+	boolean lastLocked = false;
+	
+	// joysticks
 	Joystick leftJoy = new Joystick(0);
 	Joystick rightJoy = new Joystick(1);
 	
 	// reverse drive + squared inputs
 	boolean reversed = false;
 	boolean squared = false;
-	boolean pistonOut = false;
 	
-	boolean lastHoo = false;
-	boolean lastSqu = false;
+	boolean lastSquared = false;
 	
 	double comp(double x){
 		// so you don't have to retype it for both
@@ -86,8 +93,6 @@ public class Robot extends IterativeRobot {
 			}
 		}
 		
-		// pick up left basket
-		
 		// turn around
 		leftMotor.set(-1);
 		rightMotor.set(1);
@@ -103,22 +108,15 @@ public class Robot extends IterativeRobot {
 			}
 		}
 		
-		// go straight
-		leftMotor.set(1);
-		rightMotor.set(1);
 		
-		if (Constants.USING_ENCODER){
-			while(isAutonomous() && isEnabled() && leftMotor.get() < 5000){
-				
-			}
-		} else {
-			long current = System.currentTimeMillis();
-			while(isAutonomous() && isEnabled() && (current + 5000) > System.currentTimeMillis()){
-				
-			}
+		
+		// pick up left basket
+		hookMotor.set(0.25);
+		while(!lockLimit.get()){
+			
 		}
+		hookMotor.set(0);
 		
-		// pick up right basket
 	}
 	
 	public void autonomousPeriodic() {
@@ -129,25 +127,33 @@ public class Robot extends IterativeRobot {
 		reversed = leftJoy.getRawButton(Constants.REVERSE_BUTTON_LEFTJOY);
 		boolean currSqu = leftJoy.getRawButton(Constants.SQUARE_TOGGLE_BUTTON_LEFTJOY);
 		
-		if (currSqu && !lastSqu){
+		if (currSqu && !lastSquared){
 			squared = !squared;
 		}
-		lastSqu = currSqu;
+		lastSquared = currSqu;
 		
 		leftMotor.set(comp(leftJoy.getY()));
 		rightMotor.set(comp(rightJoy.getY()));
 		
-		boolean currHoo = leftJoy.getRawButton(Constants.CLAW_TOGGLE_BUTTON_LEFTJOY);
+		boolean currLocked = leftJoy.getRawButton(Constants.CLAW_TOGGLE_BUTTON_LEFTJOY);
 		
-		if (currHoo && !lastHoo){
-			pistonOut = !pistonOut;
+		if (currLocked && !lastLocked){
+			locked = !locked;
 		}
-		lastHoo = currHoo;
+		lastLocked = currLocked;
 		
-		if (pistonOut){
-			hookPiston.set(DoubleSolenoid.Value.kForward);
+		if (locked){
+			if (lockLimit.get()){
+				hookMotor.set(0.25);
+			} else {
+				hookMotor.set(0);
+			}
 		} else {
-			hookPiston.set(DoubleSolenoid.Value.kReverse);
+			if (unlockLimit.get()){
+				hookMotor.set(-0.25);
+			} else {
+				hookMotor.set(0);
+			}
 		}
 		
 	}
