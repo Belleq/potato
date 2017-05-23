@@ -11,8 +11,8 @@ public class Robot extends IterativeRobot {
 	// hooks
 	CANTalon hookMotor = new CANTalon(3);
 
-	DigitalInput unlockLimit = new DigitalInput(0);
-	DigitalInput lockLimit = new DigitalInput(1);
+	DigitalInput upperLimit = new DigitalInput(0);
+	DigitalInput lowerLimit = new DigitalInput(1);
 
 	boolean locked = false;
 	boolean lastLocked = false;
@@ -31,23 +31,15 @@ public class Robot extends IterativeRobot {
 	boolean lastSquared = false;
 
 	double comp(double x) {
-		// so you don't have to retype it for both
 		x = ((Math.min(0.0, (Math.abs(x) - 0.05)) * x) / Math.abs(x)) / 0.95; // 5%
 																				// buffer
-
 		if (reversed) {
 			x *= -1;
 		}
-
 		if (squared) {
 			x *= Math.abs(x);
 		}
-
 		return x;
-	}
-
-	public void robotInit() {
-
 	}
 
 	public void autonomousInit() {
@@ -56,14 +48,10 @@ public class Robot extends IterativeRobot {
 		rightMotor.set(1);
 
 		if (Constants.USING_ENCODER) {
-			while (isAutonomous() && isEnabled() && leftMotor.get() < 5000) {
-
-			}
+			while (isAutonomous() && isEnabled() && leftMotor.get() < 5000);
 		} else {
 			long current = System.currentTimeMillis();
-			while (isAutonomous() && isEnabled() && (current + 5000) > System.currentTimeMillis()) {
-
-			}
+			while (isAutonomous() && isEnabled() && (current + 5000) > System.currentTimeMillis());
 		}
 
 		// turn left
@@ -71,14 +59,10 @@ public class Robot extends IterativeRobot {
 		rightMotor.set(1);
 
 		if (Constants.USING_ENCODER) {
-			while (isAutonomous() && isEnabled() && leftMotor.get() < 5000) {
-
-			}
+			while (isAutonomous() && isEnabled() && leftMotor.get() < 5000);
 		} else {
 			long current = System.currentTimeMillis();
-			while (isAutonomous() && isEnabled() && (current + 5000) > System.currentTimeMillis()) {
-
-			}
+			while (isAutonomous() && isEnabled() && (current + 5000) > System.currentTimeMillis());
 		}
 
 		// go straight
@@ -86,14 +70,10 @@ public class Robot extends IterativeRobot {
 		rightMotor.set(1);
 
 		if (Constants.USING_ENCODER) {
-			while (isAutonomous() && isEnabled() && leftMotor.get() < 5000) {
-
-			}
+			while (isAutonomous() && isEnabled() && leftMotor.get() < 5000);
 		} else {
 			long current = System.currentTimeMillis();
-			while (isAutonomous() && isEnabled() && (current + 5000) > System.currentTimeMillis()) {
-
-			}
+			while (isAutonomous() && isEnabled() && (current + 5000) > System.currentTimeMillis());
 		}
 
 		// turn around
@@ -101,21 +81,15 @@ public class Robot extends IterativeRobot {
 		rightMotor.set(1);
 
 		if (Constants.USING_ENCODER) {
-			while (isAutonomous() && isEnabled() && leftMotor.get() < 5000) {
-
-			}
+			while (isAutonomous() && isEnabled() && leftMotor.get() < 5000);
 		} else {
 			long current = System.currentTimeMillis();
-			while (isAutonomous() && isEnabled() && (current + 5000) > System.currentTimeMillis()) {
-
-			}
+			while (isAutonomous() && isEnabled() && (current + 5000) > System.currentTimeMillis());
 		}
 
 		// pick up left basket
 		hookMotor.set(0.25);
-		while (!lockLimit.get()) {
-
-		}
+		while (isAutonomous() && isEnabled() && !lowerLimit.get());
 		hookMotor.set(0);
 		locked = true;
 
@@ -143,15 +117,16 @@ public class Robot extends IterativeRobot {
 			locked = !locked;
 		}
 		lastLocked = currLocked;
-
+		
+		// TODO: Check directions
 		if (locked) {
-			if (lockLimit.get()) {
+			if (lowerLimit.get()) {
 				hookMotor.set(0.25);
 			} else {
 				hookMotor.set(0);
 			}
 		} else {
-			if (unlockLimit.get()) {
+			if (upperLimit.get()) {
 				hookMotor.set(-0.25);
 			} else {
 				hookMotor.set(0);
@@ -165,7 +140,4 @@ public class Robot extends IterativeRobot {
 		}
 	}
 
-	public void testPeriodic() {
-
-	}
 }
