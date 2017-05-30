@@ -9,7 +9,7 @@ public class Robot extends IterativeRobot {
 	CANTalon rightMotor = new CANTalon(2);
 
 	// hooks
-	CANTalon hookMotor = new CANTalon(3);
+	CANTalon hookMotor = new CANTalon(3); // BAG Motor
 
 	DigitalInput upperLimit = new DigitalInput(0);
 	DigitalInput lowerLimit = new DigitalInput(1);
@@ -48,10 +48,10 @@ public class Robot extends IterativeRobot {
 		rightMotor.set(1);
 
 		if (Constants.USING_ENCODER) {
-			while (isAutonomous() && isEnabled() && leftMotor.get() < 5000);
+			while (isAutonomous() && isEnabled() && leftMotor.get() < Constants.ENCODER_STEP_ONE);
 		} else {
 			long current = System.currentTimeMillis();
-			while (isAutonomous() && isEnabled() && (current + 5000) > System.currentTimeMillis());
+			while (isAutonomous() && isEnabled() && (current + Constants.TIME_STEP_ONE) > System.currentTimeMillis());
 		}
 
 		// turn left
@@ -59,10 +59,10 @@ public class Robot extends IterativeRobot {
 		rightMotor.set(1);
 
 		if (Constants.USING_ENCODER) {
-			while (isAutonomous() && isEnabled() && leftMotor.get() < 5000);
+			while (isAutonomous() && isEnabled() && leftMotor.get() < Constants.ENCODER_STEP_TWO);
 		} else {
 			long current = System.currentTimeMillis();
-			while (isAutonomous() && isEnabled() && (current + 5000) > System.currentTimeMillis());
+			while (isAutonomous() && isEnabled() && (current + Constants.TIME_STEP_TWO) > System.currentTimeMillis());
 		}
 
 		// go straight
@@ -70,10 +70,10 @@ public class Robot extends IterativeRobot {
 		rightMotor.set(1);
 
 		if (Constants.USING_ENCODER) {
-			while (isAutonomous() && isEnabled() && leftMotor.get() < 5000);
+			while (isAutonomous() && isEnabled() && leftMotor.get() < Constants.ENCODER_STEP_THREE);
 		} else {
 			long current = System.currentTimeMillis();
-			while (isAutonomous() && isEnabled() && (current + 5000) > System.currentTimeMillis());
+			while (isAutonomous() && isEnabled() && (current + Constants.TIME_STEP_THREE) > System.currentTimeMillis());
 		}
 
 		// turn around
@@ -81,10 +81,10 @@ public class Robot extends IterativeRobot {
 		rightMotor.set(1);
 
 		if (Constants.USING_ENCODER) {
-			while (isAutonomous() && isEnabled() && leftMotor.get() < 5000);
+			while (isAutonomous() && isEnabled() && leftMotor.get() < Constants.ENCODER_STEP_FOUR);
 		} else {
 			long current = System.currentTimeMillis();
-			while (isAutonomous() && isEnabled() && (current + 5000) > System.currentTimeMillis());
+			while (isAutonomous() && isEnabled() && (current + Constants.TIME_STEP_FOUR) > System.currentTimeMillis());
 		}
 
 		// pick up left basket
